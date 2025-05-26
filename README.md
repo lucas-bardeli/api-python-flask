@@ -27,3 +27,4 @@ Códigos desenvolvidos no curso de Python com Flask - Curso Introdutório da Roc
 ```bash
   pip3 install -r requirements.txt
 ```
+* Instale a extensão SQLite Viewer para poder abrir o banco de dados;
