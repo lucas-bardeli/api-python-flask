@@ -1,15 +1,16 @@
 
-# Virtual Environments
+# Environments
 .env
 .venv
 env/
 venv/
 
-# Compiled Python files
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
+*.py[codz]
+*$py.class
 
 # Editors/IDEs
 .vscode/
 .idea/
-.DS_Store
+*.DS_Store

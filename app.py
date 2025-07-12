@@ -16,11 +16,12 @@ login_manager.login_view = 'login'
 CORS(app)
 
 # Modelagem:
-# User (id, username, password)
+# Usuário (id, username, password, cart)
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
+    cart = db.relationship('CartItem', backref='user.id', lazy=True)
 
 # Produto (id, name, price, description)
 class Product(db.Model):
@@ -29,12 +30,16 @@ class Product(db.Model):
     price = db.Column(db.Float, nullable=False)
     description = db.Column(db.Text, nullable=True)
 
+# Carrinho (id, user_id, product_id)
+class CartItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
 
 # Autenticação
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
 
 # Rotas:
 # Login
@@ -43,10 +48,9 @@ def login():
     data = request.json
     user = User.query.filter_by(username=data.get("username")).first()
     if (user and (data.get("password") == user.password)):
-            login_user(user)
-            return jsonify({"message": "Logged in successfully"})
+        login_user(user)
+        return jsonify({"message": "Logged in successfully"})
     return jsonify({"message": "Unauthorized. Invalid credentials"}), 401
-
 
 # Logout
 @app.route('/logout', methods=["POST"])
@@ -54,7 +58,6 @@ def login():
 def logout():
     logout_user()
     return jsonify({"message": "Logged out successfully"})
-
 
 # Adicionar produto
 @app.route('/api/products/add', methods=["POST"])
@@ -67,7 +70,6 @@ def add_product():
         db.session.commit()
         return jsonify({"message": "Product added successfully"})
     return jsonify({"message": "Invalid product data"}), 400
-
 
 # Deletar produto
 @app.route('/api/products/delete/<int:product_id>', methods=["DELETE"])
@@ -84,7 +86,6 @@ def delete_product(product_id):
     # Se não existe, retornar 404 not found
     return jsonify({"message": "Product not found"}), 404
 
-
 # Recuperar produto
 @app.route('/api/products/<int:product_id>', methods=["GET"])
 def get_product_details(product_id):
@@ -97,7 +98,6 @@ def get_product_details(product_id):
             "description": product.description
         })
     return jsonify({"message": "Product not found"}), 404
-
 
 # Atualizar produto
 @app.route('/api/products/update/<int:product_id>', methods=["PUT"])
@@ -116,7 +116,6 @@ def update_product(product_id):
     db.session.commit()
     return jsonify({"message": "Product updated successfully"})
 
-
 # Recuperar produtos
 @app.route('/api/products', methods=["GET"])
 def get_products():
@@ -131,12 +130,10 @@ def get_products():
         product_list.append(product_data)
     return jsonify(product_list)
 
-
 # Definir uma rota raiz (página inicial) e a função que será executada ao requisitar
 @app.route('/')
 def hello_world():
     return "Hello, World!"
-
 
 if __name__ == "__main__":
     app.run(debug=True)
