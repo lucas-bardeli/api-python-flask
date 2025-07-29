@@ -1,4 +1,8 @@
 
+# Flask
+instance/
+*.db
+
 # Environments
 .env
 .venv
@@ -11,6 +15,7 @@ __pycache__/
 *$py.class
 
 # Editors/IDEs
+.vs/
 .vscode/
 .idea/
 *.DS_Store
