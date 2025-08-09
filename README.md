@@ -1,5 +1,5 @@
 
-## API com Python e Flask:
+## 🐍 API com Python e Flask:
 API completa que simula um sistema de e-commerce, com rotas, integração com um banco de dados, 
 autenticação de usuário e funcionalidades essenciais, como listar produtos, adicionar itens ao 
 carrinho de compras e realizar o checkout.

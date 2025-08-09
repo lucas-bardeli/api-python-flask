@@ -28,9 +28,7 @@ paths:
           headers: 
             Set-Cookie:
               type: string
-
           description: Logged in successfully
-
         401:
           description: Unauthorized. Invalid credentials
 
@@ -41,7 +39,7 @@ paths:
         200:
           description: Logout successfully
         401:
-          description: Unauthorized. Invalid credentials
+          description: Unauthorized. User not logged in
   
   /api/products:
     get:
@@ -89,6 +87,8 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Product'
+        400:
+          description: Query parameter 'q' is required 
         404:
           description: Not Found. No products found for the search query.
 
@@ -102,10 +102,12 @@ paths:
           schema:
             $ref: '#/definitions/Product'
       responses:
-        201:
+        200:
           description: Product added successfully
         400:
-          description: Failed to add the product
+          description: Invalid product data
+        401:
+          description: Unauthorized. User not logged in
 
   /api/products/update/{product_id}:
     put:
@@ -126,8 +128,8 @@ paths:
           description: Product updated successfully
         404:
           description: Not Found. Product not available
-        400:
-          description: Failed to update the product
+        401:
+          description: Unauthorized. User not logged in
 
   /api/products/delete/{product_id}:
     delete:
@@ -143,6 +145,8 @@ paths:
           description: Product deleted successfully
         404:
           description: Not Found. Product not available
+        401:
+          description: Unauthorized. User not logged in
 
   /api/cart/add/{product_id}:
     post:
@@ -158,12 +162,14 @@ paths:
           description: Item added to the cart successfully
         400:
           description: Failed to add item to the cart
+        401:
+          description: Unauthorized. User not logged in
 
-  /api/cart/remove/{item_id}:
+  /api/cart/remove/{product_id}:
     delete:
       summary: Remove item from the cart
       parameters:
-        - name: item_id
+        - name: product_id
           in: path
           type: integer
           required: true
@@ -173,6 +179,8 @@ paths:
           description: Item removed from the cart successfully
         400:
           description: Failed to remove item from the cart
+        401:
+          description: Unauthorized. User not logged in
 
   /api/cart:
     get:
@@ -213,6 +221,7 @@ definitions:
 
   Product:
     type: object
+    required: [name, price]
     properties:
       id:
         type: integer
