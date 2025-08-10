@@ -110,7 +110,6 @@ def search_users():
 
 # Adicionar usuário
 @app.route('/api/users/add', methods=["POST"])
-@login_required
 def add_user():
     data = request.json
     if (("username" in data) and ("password" in data)): 
@@ -300,4 +299,3 @@ def hello_world():
 
 if __name__ == "__main__":
     app.run(debug=True)
-    
