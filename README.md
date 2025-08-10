@@ -12,8 +12,8 @@ pip3 install -r requirements.txt
     - `flask shell` -> Abre o terminal flask shell.
     - `db.create_all()` -> Transforma os modelos em tabelas.
     - `db.drop_all()` -> Deleta todas as tabelas.
-    - `user = User(username="", password="")` -> Cria um usuário.
-    - `db.session.add(user)` -> Adiciona o usuário.
+    - `db.session.add()` -> Adiciona mudanças.
+    - `db.session.delete()` -> Deleta informações.
     - `db.session.commit()` -> Efetiva as mudanças no banco.
     - `exit()` -> Sai do flask shell.
 

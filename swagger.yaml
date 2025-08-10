@@ -19,10 +19,7 @@ paths:
           schema:
             type: object
             properties:
-              username:
-                type: string
-              password:
-                type: string
+              $ref: '#/definitions/NewUser'
       responses:
         200:
           headers: 
@@ -40,6 +37,113 @@ paths:
           description: Logout successfully
         401:
           description: Unauthorized. User not logged in
+
+  /api/users:
+    get:
+      summary: Get a list of users
+      responses:
+        200:
+          description: Returns a list of users
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+        404:
+          description: Not Found. No users available
+
+  /api/users/{user_id}:
+    get:
+      summary: Get user details by ID
+      parameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+          description: User ID to retrieve details
+      responses:
+        200:
+          description: Returns user details
+          schema:
+            $ref: '#/definitions/User'
+        404:
+          description: Not Found. User not available
+
+  /api/users/search:
+    get:
+      summary: Search for users
+      parameters:
+        - name: q
+          in: query
+          type: string
+          required: true
+          description: Search query
+      responses:
+        200:
+          description: Returns a list of users matching the search query
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+        400:
+          description: Query parameter 'q' is required
+        404:
+          description: Not Found. No users found for the search query
+
+  /api/users/add:
+    post:
+      summary: Add a new user
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/NewUser'
+      responses:
+        200:
+          description: User added successfully
+        400:
+          description: Invalid user data
+        401:
+          description: Unauthorized. User not logged in
+
+  /api/users/update/{user_id}:
+    put:
+      summary: Update a user by ID
+      parameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+          description: User ID to update
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/NewUser'
+      responses:
+        200:
+          description: User updated successfully
+        404:
+          description: Not Found. User not available
+        401:
+          description: Unauthorized. User not logged in
+
+  /api/users/delete/{user_id}:
+    delete:
+      summary: Delete a user by ID
+      parameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+          description: User ID to delete
+      responses:
+        200:
+          description: User deleted successfully
+        404:
+          description: Not Found. User not available
+        401:
+          description: Unauthorized. User not logged in
   
   /api/products:
     get:
@@ -52,7 +156,7 @@ paths:
             items:
               $ref: '#/definitions/Product'
         404:
-          description: Not Found. No products available.
+          description: Not Found. No products available
 
   /api/products/{product_id}:
     get:
@@ -69,7 +173,7 @@ paths:
           schema:
             $ref: '#/definitions/Product'
         404:
-          description: Not Found. Product not available.
+          description: Not Found. Product not available
 
   /api/products/search:
     get:
@@ -90,7 +194,7 @@ paths:
         400:
           description: Query parameter 'q' is required 
         404:
-          description: Not Found. No products found for the search query.
+          description: Not Found. No products found for the search query
 
   /api/products/add:
     post:
@@ -100,7 +204,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/Product'
+            $ref: '#/definitions/NewProduct'
       responses:
         200:
           description: Product added successfully
@@ -122,7 +226,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/Product'
+            $ref: '#/definitions/NewProduct'
       responses:
         200:
           description: Product updated successfully
@@ -200,7 +304,7 @@ paths:
       summary: Checkout and clear the cart
       responses:
         200:
-          description: Checkout successful. Cart has been cleared.
+          description: Checkout successful. Cart has been cleared
         401:
           description: Unauthorized. User not logged in
 
@@ -214,17 +318,30 @@ definitions:
         type: string
       password:
         type: string
-      cart:
-        type: array
-        items:
-          $ref: '#/definitions/CartItem'
+        
+  NewUser:
+    type: object
+    properties:
+      username:
+        type: string
+      password:
+        type: string
 
   Product:
     type: object
-    required: [name, price]
     properties:
       id:
         type: integer
+      name:
+        type: string
+      price:
+        type: number
+      description:
+        type: string
+
+  NewProduct:
+    type: object
+    properties:
       name:
         type: string
       price:
