@@ -17,9 +17,7 @@ paths:
           in: body
           required: true
           schema:
-            type: object
-            properties:
-              $ref: '#/definitions/NewUser'
+            $ref: '#/definitions/NewUser'
       responses:
         200:
           headers: 

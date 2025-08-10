@@ -17,4 +17,6 @@ pip3 install -r requirements.txt
     - `db.session.commit()` -> Efetiva as mudanças no banco.
     - `exit()` -> Sai do flask shell.
 
-- Instale a extensão SQLite Viewer do VS Code para poder visualizar o banco de dados.
+- Caso use o banco de dados SQLite, instale a extensão SQLite Viewer do VS Code para poder visualizá-lo.
+- Crie um arquivo `.env` na raiz do projeto e configure as variáveis de ambiente do [.env.exemple](.env.exemple).
+- O arquivo [swagger.yaml](swagger.yaml) contém a documentação da API, abra onde preferir.
